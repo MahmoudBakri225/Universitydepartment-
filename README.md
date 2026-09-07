@@ -1,467 +1,627 @@
-# University Department  Management System
+# 🎓 University Course Management System
 
-A Java Maven console application that demonstrates core Object-Oriented Programming (OOP) concepts through a university course management scenario.
-
-The system models a university department, different types of courses, and students enrolled in those courses. It demonstrates abstraction, inheritance, polymorphism, constructor chaining, and object relationships using Java collections.
+A Java-based **Object-Oriented Programming (OOP)** project that models a university department, manages students and courses, supports different course types, and demonstrates abstraction, inheritance, polymorphism, constructor chaining, and object relationships.
 
 ---
 
-## Overview
+## 📌 Overview
 
-The application represents a university department that offers multiple types of courses:
+The **University Course Management System** is designed to represent the core structure of a simple university course registration system using Java classes and object relationships.
 
-- **Theory Courses**
-- **Lab Courses**
+The system manages:
 
-A common abstract `Course` class defines the shared course information and behavior, while `TheoryCourse` and `LabCourse` provide specialized implementations.
+- University departments
+- Students
+- Courses
+- Theory courses
+- Lab courses
+- Student course enrollment
+- Course types
+- Department courses
+- Polymorphic course handling
 
-Students can enroll in different course types, and the department maintains collections of both students and courses.
-
-The application provides a simple console-based demonstration of the complete scenario.
-
----
-
-## Features
-
-- Create a university department
-- Add multiple courses to a department
-- Support Theory and Lab course types
-- Create multiple students
-- Enroll students in different course types
-- Store different course types using `List<Course>`
-- Demonstrate runtime polymorphism
-- Use constructor chaining with `super(...)`
-- Override `toString()` in child classes
-- Display all courses offered by the department
-- Display courses enrolled by each student
-- Demonstrate dynamic `getType()` behavior
+The project was developed as an **Object-Oriented Programming assignment** using an abstract `Course` class, inheritance, polymorphism, constructor chaining, and composition/aggregation relationships.
 
 ---
 
-## System Architecture
+## 🏗️ Architecture Diagram
 
-The project follows the object-oriented structure defined by the assignment.
-
-```mermaid
-classDiagram
-
-    class Course {
-        <<abstract>>
-        -String courseCode
-        -String name
-        -String description
-        -int credits
-        -int maxCapacity
-        -String semester
-        -String instructorName
-        +Course(...)
-        +getCourseCode() String
-        +getName() String
-        +getDescription() String
-        +getCredits() int
-        +getMaxCapacity() int
-        +getSemester() String
-        +getInstructorName() String
-        +setCourseCode(String) void
-        +setName(String) void
-        +setDescription(String) void
-        +setCredits(int) void
-        +setMaxCapacity(int) void
-        +setSemester(String) void
-        +setInstructorName(String) void
-        +getType() String
-        +toString() String
-    }
-
-    class TheoryCourse {
-        -String textbook
-        -String examType
-        -int lectureHoursPerWeek
-        -String classroomNumber
-        +getType() String
-        +toString() String
-    }
-
-    class LabCourse {
-        -int equipmentCount
-        -String labLocation
-        -boolean safetyTrainingRequired
-        -int sessionDurationMinutes
-        -String supervisorName
-        +getType() String
-        +toString() String
-    }
-
-    class Student {
-        -String name
-        -List~Course~ courses
-        +enrollInCourse(Course) void
-    }
-
-    class Department {
-        -String name
-        -List~Student~ students
-        -List~Course~ courses
-        +addStudent(Student) void
-        +addCourse(Course) void
-    }
-
-    Course <|-- TheoryCourse
-    Course <|-- LabCourse
-
-    Department "1" o-- "1..*" Student : has
-    Department "1" o-- "1..*" Course : offers
-    Student "1" o-- "1..*" Course : enrolls in
+```text
+                         🎓 UNIVERSITY COURSE SYSTEM
+                                  |
+                                  v
+                       +-----------------------+
+                       |      Department       |
+                       |-----------------------|
+                       | departmentId          |
+                       | departmentName        |
+                       | students              |
+                       | courses               |
+                       +-----------+-----------+
+                                   |
+                    +--------------+--------------+
+                    |                             |
+                    v                             v
+             +-------------+               +-------------+
+             |   Student   |               |   Course    |
+             |-------------|               | <<abstract>>|
+             | studentId   |               | courseCode  |
+             | studentName |               | name        |
+             | department  |               | description |
+             | email       |               | credits     |
+             | yearLevel   |               | maxCapacity |
+             | gpa         |               | semester    |
+             | courses     |               | instructor  |
+             +------+------+               +------+------+
+                    |                             |
+                    |                             |
+                    |                   +---------+---------+
+                    |                   |                   |
+                    v                   v                   v
+             List<Course>       +---------------+   +---------------+
+                                | TheoryCourse  |   |   LabCourse   |
+                                |---------------|   |---------------|
+                                | textbook      |   | equipment     |
+                                | examType      |   | labLocation   |
+                                | lectureHours  |   | safetyTraining|
+                                | classroom     |   | duration      |
+                                +---------------+   | supervisor    |
+                                                    +---------------+
 ```
 
 ---
 
-## Class Structure
+## 🔗 Class Relationships
 
-### Course
+```text
+                         Course
+                       <<abstract>>
+                       /          \
+                      /            \
+                     v              v
+             TheoryCourse        LabCourse
 
-`Course` is the abstract base class for all course types.
 
-It contains the common information shared by every course.
+Department
+   |
+   +-- List<Student>
+   |
+   +-- List<Course>
 
-### Common Attributes
 
-| Attribute | Type | Description |
-|---|---|---|
-| `courseCode` | `String` | Unique course identifier |
-| `name` | `String` | Course name |
-| `description` | `String` | Course description |
-| `credits` | `int` | Number of course credits |
-| `maxCapacity` | `int` | Maximum number of students |
-| `semester` | `String` | Course semester |
-| `instructorName` | `String` | Course instructor |
+Student
+   |
+   +-- List<Course>
+```
 
-### Main Method
+### Relationship Summary
+
+| Class | Contains / Extends |
+|---|---|
+| `Course` | Abstract parent class for all course types |
+| `TheoryCourse` | Extends `Course` |
+| `LabCourse` | Extends `Course` |
+| `Department` | Contains `List<Student>` and `List<Course>` |
+| `Student` | Contains `List<Course>` |
+
+---
+
+## 🔄 UML Relationships
+
+### Generalization / Inheritance
+
+```text
+TheoryCourse ─────▷ Course
+LabCourse ────────▷ Course
+```
+
+Both concrete course classes inherit the common attributes and behavior from the abstract `Course` class.
+
+### Department Relationships
+
+```text
+Department
+ |
+ +-- 1..* Student
+ |
+ +-- 1..* Course
+```
+
+A department can contain multiple students and multiple courses.
+
+### Student Enrollment
+
+```text
+Student
+ |
+ +-- 1..* Course
+```
+
+A student can enroll in different types of courses.
+
+---
+
+# 📦 Class Design
+
+## 📚 Course
+
+The `Course` class is an abstract class that represents the common structure of university courses.
+
+### Attributes
 
 ```java
-public abstract String getType();
+protected String courseCode;
+protected String name;
+protected String description;
+protected int credits;
+protected int maxCapacity;
+protected String semester;
+protected String instructorName;
 ```
 
-The method is implemented differently by the concrete course classes.
+### Responsibilities
+
+- Store common course information.
+- Provide getters and setters.
+- Define the abstract `getType()` method.
+- Provide common course behavior for subclasses.
+
+### Main Methods
+
+```text
+Course(...)
+
+getCourseCode()
+getName()
+getDescription()
+getCredits()
+getMaxCapacity()
+getSemester()
+getInstructorName()
+
+setCourseCode(...)
+setName(...)
+setDescription(...)
+setCredits(...)
+setMaxCapacity(...)
+setSemester(...)
+setInstructorName(...)
+
+getType()
+toString()
+```
+
+`Course` is abstract, so it cannot be instantiated directly.
 
 ---
 
-## TheoryCourse
+## 📖 TheoryCourse
 
-`TheoryCourse` extends the abstract `Course` class and represents theoretical academic courses.
+The `TheoryCourse` class extends `Course` and represents a theoretical course.
 
-Example course:
+### Additional Attributes
 
-```text
-CS201 - Data Structures
+```java
+private String textbook;
+private String examType;
+private int lectureHoursPerWeek;
+private String classroomNumber;
 ```
 
-Example output:
+### Responsibilities
 
-```text
-TheoryCourse{
-    courseCode=CS201,
-    name=Data Structures,
-    textbook=Introduction to Algorithms,
-    examType=Written,
-    lectureHoursPerWeek=3,
-    classroomNumber=C-101
-}
-```
+- Store theory-course-specific information.
+- Return `"Theory"` from `getType()`.
+- Override `toString()`.
 
-### Example Category
+### Type
 
 ```text
 Theory
 ```
 
+### Constructor Chaining
+
+```java
+super(courseCode, name, description, credits,
+      maxCapacity, semester, instructorName);
+```
+
 ---
 
-## LabCourse
+## 🧪 LabCourse
 
-`LabCourse` extends the abstract `Course` class and represents practical laboratory courses.
+The `LabCourse` class extends `Course` and represents a practical laboratory course.
 
-Example course:
+### Additional Attributes
 
-```text
-CS210 - Programming Lab
+```java
+private int equipmentCount;
+private String labLocation;
+private boolean safetyTrainingRequired;
+private int sessionDurationMinutes;
+private String supervisorName;
 ```
 
-Example output:
+### Responsibilities
 
-```text
-LabCourse{
-    courseCode=CS210,
-    name=Programming Lab,
-    equipmentCount=30,
-    labLocation=Building B, Room 1,
-    safetyTrainingRequired=true,
-    sessionDurationMinutes=90,
-    supervisorName=Eng. Yousef Sami
-}
-```
+- Store lab-course-specific information.
+- Return `"Lab"` from `getType()`.
+- Override `toString()`.
 
-### Example Category
+### Type
 
 ```text
 Lab
 ```
 
+### Constructor Chaining
+
+```java
+super(courseCode, name, description, credits,
+      maxCapacity, semester, instructorName);
+```
+
 ---
 
-# Object-Oriented Design
+## 👤 Student
 
-The project demonstrates several fundamental OOP principles.
+The `Student` class represents a university student.
 
-## 1. Abstraction
+### Attributes
 
-`Course` is declared as an abstract class.
+```java
+private int studentId;
+private String studentName;
+private String department;
+private String email;
+private String phoneNumber;
+private int yearLevel;
+private double gpa;
+private String address;
+private List<Course> enrolledCourses;
+```
+
+### Responsibilities
+
+- Store student information.
+- Maintain enrolled courses.
+- Enroll in courses.
+- Display the student's courses.
+
+### Main Methods
+
+```text
+Student(...)
+
+getStudentId()
+getStudentName()
+getDepartment()
+getEmail()
+getPhoneNumber()
+getYearLevel()
+getGpa()
+getAddress()
+getEnrolledCourses()
+
+setStudentId(...)
+setStudentName(...)
+setDepartment(...)
+setEmail(...)
+setPhoneNumber(...)
+setYearLevel(...)
+setGpa(...)
+setAddress(...)
+
+enroll(...)
+displayCourses()
+toString()
+```
+
+---
+
+## 🏫 Department
+
+The `Department` class represents a university department.
+
+### Attributes
+
+```java
+private int departmentId;
+private String departmentName;
+private String building;
+private String headOfDepartment;
+private String contactEmail;
+private int establishedYear;
+private List<Student> students;
+private List<Course> courses;
+```
+
+### Responsibilities
+
+- Store department information.
+- Maintain the department's students.
+- Maintain the department's courses.
+- Add students.
+- Add courses.
+- Display all courses offered by the department.
+
+### Main Methods
+
+```text
+Department(...)
+
+getDepartmentId()
+getDepartmentName()
+getBuilding()
+getHeadOfDepartment()
+getContactEmail()
+getEstablishedYear()
+getStudents()
+getCourses()
+
+setDepartmentId(...)
+setDepartmentName(...)
+setBuilding(...)
+setHeadOfDepartment(...)
+setContactEmail(...)
+setEstablishedYear(...)
+
+addStudent(...)
+addCourse(...)
+displayCourses()
+toString()
+```
+
+---
+
+# 🧠 Object-Oriented Programming Concepts
+
+## Abstract Class
+
+The `Course` class is declared as:
 
 ```java
 public abstract class Course
 ```
 
-This prevents direct creation of generic `Course` objects and provides a common structure for all course types.
+Therefore, a `Course` object cannot be created directly.
 
-```text
-Course
-   │
-   ├── TheoryCourse
-   │
-   └── LabCourse
+It provides common course attributes and declares:
+
+```java
+public abstract String getType();
 ```
+
+The subclasses provide the actual implementation.
 
 ---
 
-## 2. Inheritance
+## Inheritance
 
-Both concrete course types inherit from `Course`.
+Both concrete course types extend `Course`:
 
-```text
-TheoryCourse → Course
-LabCourse    → Course
+```java
+public class TheoryCourse extends Course
 ```
 
-This allows common course information and behavior to be defined once in the parent class.
+```java
+public class LabCourse extends Course
+```
+
+This allows the subclasses to reuse the common course structure.
 
 ---
 
-## 3. Polymorphism
+## Polymorphism
 
-The project demonstrates polymorphism by storing different course objects using the common parent type:
+The project demonstrates polymorphism by storing both course types using `Course` references.
 
-```java
-List<Course>
-```
-
-For example:
+Example:
 
 ```java
-List<Course> courses = new ArrayList<>();
-
-courses.add(new TheoryCourse(...));
-courses.add(new LabCourse(...));
+Course dataStructures = new TheoryCourse(...);
+Course programmingLab = new LabCourse(...);
 ```
 
-Although the collection contains `Course` references, Java determines the actual implementation at runtime.
-
-For example:
+The department also stores courses using:
 
 ```java
-course.getType();
+private List<Course> courses;
 ```
 
-can return:
-
-```text
-Theory
-```
-
-or:
-
-```text
-Lab
-```
-
-depending on the actual object.
-
----
-
-## 4. Constructor Chaining
-
-The child classes use constructor chaining to initialize the inherited `Course` attributes.
-
-Conceptually:
-
-```java
-public TheoryCourse(...) {
-    super(courseCode, name, description, credits,
-          maxCapacity, semester, instructorName);
-
-    // Initialize TheoryCourse-specific attributes
-}
-```
-
-The same approach is used by `LabCourse`.
-
-This allows the parent class to initialize its own state while the child class initializes its specialized attributes.
-
----
-
-## 5. Method Overriding
-
-Both concrete course classes override:
-
-```java
-getType()
-```
-
-and:
-
-```java
-toString()
-```
-
-This allows each course type to provide its own behavior and representation.
-
----
-
-# Department and Student Relationships
-
-The system models relationships between:
-
-```text
-Department
-    │
-    ├── Students
-    │
-    └── Courses
-
-Student
-    │
-    └── Enrolled Courses
-```
-
-A department can contain multiple students and multiple courses.
-
-A student can enroll in different types of courses.
-
-Because students work with `Course` references, they can enroll in both:
+Therefore, the same list can contain:
 
 ```text
 TheoryCourse
 LabCourse
 ```
 
-without requiring separate enrollment logic.
+At runtime, Java calls the correct implementation of:
 
----
-
-# Application Flow
-
-```mermaid
-flowchart TD
-
-    A([Start]) --> B[Create Computer Science Department]
-
-    B --> C[Create Theory Courses]
-    C --> D[Create Lab Courses]
-
-    D --> E[Add Courses to Department]
-
-    E --> F[Create Students]
-
-    F --> G[Enroll Students in Courses]
-
-    G --> H[Display All Department Courses]
-
-    H --> I[Display Courses for Each Student]
-
-    I --> J[Demonstrate Polymorphism]
-
-    J --> K([Program Finished])
+```java
+course.getType();
 ```
 
----
-
-# Console Application
-
-The application is implemented as a console-based Java application.
-
-The main execution flow displays the following stages:
+For example:
 
 ```text
-======================================================================
-  UNIVERSITY COURSE MANAGEMENT SYSTEM
-======================================================================
-1) Creating the Computer Science department...
-2) Creating Theory and Lab courses...
-3) Creating students...
-4) Enrolling students in different course types...
+CS201 | Data Structures --> Theory
+CS305 | Database Systems --> Theory
+CS210 | Programming Lab --> Lab
+CS310 | Networking Lab --> Lab
 ```
 
 ---
 
-# Courses Offered
+## Constructor Chaining
 
-The sample application creates four courses:
+Both child classes call the parent constructor using `super(...)`.
 
-### Theory Courses
+Example:
 
-```text
-CS201 - Data Structures
-CS305 - Database Systems
+```java
+super(courseCode, name, description, credits,
+      maxCapacity, semester, instructorName);
 ```
 
-### Lab Courses
-
-```text
-CS210 - Programming Lab
-CS310 - Networking Lab
-```
-
-The department displays all four courses using their overridden `toString()` implementations.
+This initializes the common `Course` attributes before initializing the subclass-specific attributes.
 
 ---
 
-# Student Enrollments
+## Encapsulation
 
-The sample application creates two students:
+The `Student`, `Department`, `TheoryCourse`, and `LabCourse` classes use private attributes with public getters and setters.
+
+Example:
+
+```java
+private String studentName;
+
+public String getStudentName() {
+    return studentName;
+}
+
+public void setStudentName(String studentName) {
+    this.studentName = studentName;
+}
+```
+
+This provides controlled access to object data.
+
+---
+
+## Method Overriding
+
+Both concrete course classes override `getType()` and `toString()`.
+
+### TheoryCourse
+
+```java
+@Override
+public String getType() {
+    return "Theory";
+}
+```
+
+### LabCourse
+
+```java
+@Override
+public String getType() {
+    return "Lab";
+}
+```
+
+This demonstrates runtime polymorphic behavior.
+
+---
+
+# 🎓 University Scenario
+
+The example creates one department:
+
+```text
+Department: Computer Science
+Building: Building C
+Head: Dr. Hassan Ali
+```
+
+The department contains four courses:
+
+```text
+CS201 - Data Structures       - Theory
+CS305 - Database Systems      - Theory
+CS210 - Programming Lab       - Lab
+CS310 - Networking Lab        - Lab
+```
+
+---
+
+# 👥 Students
+
+The application creates two students:
 
 ```text
 Ahmed
 Sara
 ```
 
-### Ahmed
-
-Ahmed is enrolled in:
+### Ahmed's Courses
 
 ```text
-CS201 - Data Structures
-CS310 - Networking Lab
+Data Structures
+Networking Lab
 ```
 
-### Sara
-
-Sara is enrolled in:
+### Sara's Courses
 
 ```text
-CS210 - Programming Lab
-CS305 - Database Systems
+Programming Lab
+Database Systems
 ```
 
-This demonstrates that a student can enroll in different course types through the common `Course` abstraction.
+This demonstrates that a student can enroll in different course types.
 
 ---
 
-# Polymorphism Demonstration
+# 📋 All Courses Offered
 
-The application explicitly demonstrates runtime polymorphism.
-
-The courses are handled through `Course` references while the correct implementation of `getType()` is selected at runtime.
+The department displays all courses stored in its `List<Course>`.
 
 Example output:
+
+```text
+======================================================================
+  ALL COURSES OFFERED BY THE DEPARTMENT
+======================================================================
+
+Department: Computer Science - Courses offered:
+
+  - TheoryCourse{courseCode=CS201, name=Data Structures,
+    textbook=Introduction to Algorithms, examType=Written,
+    lectureHoursPerWeek=3, classroomNumber=C-101}
+
+  - TheoryCourse{courseCode=CS305, name=Database Systems,
+    textbook=Database System Concepts, examType=Written,
+    lectureHoursPerWeek=3, classroomNumber=C-102}
+
+  - LabCourse{courseCode=CS210, name=Programming Lab,
+    equipmentCount=30, labLocation=Building B, Room 1,
+    safetyTrainingRequired=true, sessionDurationMinutes=90,
+    supervisorName=Eng. Yousef Sami}
+
+  - LabCourse{courseCode=CS310, name=Networking Lab,
+    equipmentCount=15, labLocation=Building B, Room 3,
+    safetyTrainingRequired=true, sessionDurationMinutes=120,
+    supervisorName=Eng. Mona Adel}
+```
+
+---
+
+# 👤 Student Enrollment Output
+
+Example:
+
+```text
+======================================================================
+  COURSES ENROLLED BY EACH STUDENT
+======================================================================
+
+Student: Ahmed
+  - TheoryCourse{courseCode=CS201, name=Data Structures, ...}
+  - LabCourse{courseCode=CS310, name=Networking Lab, ...}
+
+Student: Sara
+  - LabCourse{courseCode=CS210, name=Programming Lab, ...}
+  - TheoryCourse{courseCode=CS305, name=Database Systems, ...}
+```
+
+---
+
+# 🔬 Polymorphism Demonstration
+
+The program explicitly demonstrates polymorphism:
 
 ```text
 ======================================================================
@@ -477,123 +637,16 @@ but Java calls the correct getType() implementation at runtime:
 - CS310 | Networking Lab --> Lab
 ```
 
-This demonstrates the key OOP concept of:
-
-```text
-One Parent Type
-      ↓
-Multiple Child Types
-      ↓
-Different Runtime Behavior
-```
+The objects are referenced as `Course`, but their actual implementations determine the result of `getType()`.
 
 ---
 
-# Sample Output
+# 📁 Project Structure
 
 ```text
-======================================================================
-  UNIVERSITY COURSE MANAGEMENT SYSTEM
-======================================================================
-
-1) Creating the Computer Science department...
-2) Creating Theory and Lab courses...
-3) Creating students...
-4) Enrolling students in different course types...
-
-======================================================================
-  ALL COURSES OFFERED BY THE DEPARTMENT
-======================================================================
-
-Department: Computer Science - Courses offered:
-
-  - TheoryCourse{
-      courseCode=CS201,
-      name=Data Structures,
-      textbook=Introduction to Algorithms,
-      examType=Written,
-      lectureHoursPerWeek=3,
-      classroomNumber=C-101
-    }
-
-  - TheoryCourse{
-      courseCode=CS305,
-      name=Database Systems,
-      textbook=Database System Concepts,
-      examType=Written,
-      lectureHoursPerWeek=3,
-      classroomNumber=C-102
-    }
-
-  - LabCourse{
-      courseCode=CS210,
-      name=Programming Lab,
-      equipmentCount=30,
-      labLocation=Building B, Room 1,
-      safetyTrainingRequired=true,
-      sessionDurationMinutes=90,
-      supervisorName=Eng. Yousef Sami
-    }
-
-  - LabCourse{
-      courseCode=CS310,
-      name=Networking Lab,
-      equipmentCount=15,
-      labLocation=Building B, Room 3,
-      safetyTrainingRequired=true,
-      sessionDurationMinutes=120,
-      supervisorName=Eng. Mona Adel
-    }
-```
-
----
-
-# Student Courses
-
-```text
-======================================================================
-  COURSES ENROLLED BY EACH STUDENT
-======================================================================
-
-Student: Ahmed
-
-  - TheoryCourse{
-      courseCode=CS201,
-      name=Data Structures,
-      ...
-    }
-
-  - LabCourse{
-      courseCode=CS310,
-      name=Networking Lab,
-      ...
-    }
-
-
-Student: Sara
-
-  - LabCourse{
-      courseCode=CS210,
-      name=Programming Lab,
-      ...
-    }
-
-  - TheoryCourse{
-      courseCode=CS305,
-      name=Database Systems,
-      ...
-    }
-```
-
----
-
-# Project Structure
-
-```text
-universitycourses/
+Universitycourses/
 │
 ├── pom.xml
-├── README.md
 │
 └── src/
     └── main/
@@ -612,193 +665,126 @@ universitycourses/
 
 ---
 
-# Technologies
+# 💻 Technologies Used
 
 | Technology | Purpose |
 |---|---|
 | Java | Application development |
-| Apache Maven | Build and project management |
-| Java Collections | Managing courses and students |
-| `List<Course>` | Polymorphic course storage |
-| NetBeans IDE | Development environment |
+| Object-Oriented Programming | System design |
+| List / ArrayList | Collection management |
+| Maven | Project build and management |
+| Apache NetBeans | Development environment |
 
 ---
 
-# Requirements
+# ▶️ How to Run
 
-To run this project, you need:
+## Prerequisites
 
-- Java Development Kit (JDK)
-- Apache Maven
-- NetBeans IDE or another Java IDE
+Make sure you have:
 
----
+- Java JDK installed
+- Apache Maven installed
+- Apache NetBeans, IntelliJ IDEA, or Eclipse
 
-# Running the Project
+## Using an IDE
 
-## Using NetBeans
-
-1. Open NetBeans.
-2. Open the `universitycourses` Maven project.
-3. Allow Maven to load the project.
-4. Build the project.
-5. Run the application.
-6. Review the output in the console.
-
----
+1. Open the Maven project in your IDE.
+2. Make sure the Maven project is loaded correctly.
+3. Locate the main class:
+   `Universitycourses.java`
+4. Run the application.
+5. Review the console output.
 
 ## Using Maven
 
-From the project root directory:
+Navigate to the project directory:
+
+```bash
+cd universitycourses
+```
+
+Compile the project:
 
 ```bash
 mvn clean compile
 ```
 
-The application entry point is:
+Build the project:
+
+```bash
+mvn clean package
+```
+
+The application can also be executed directly from the IDE.
+
+---
+
+# ✅ Build & Execution
+
+The project successfully compiles and executes using Maven.
+
+Example final output:
 
 ```text
-com.mycompany.universitycourses.Universitycourses
+======================================================================
+  PROGRAM FINISHED SUCCESSFULLY
+======================================================================
+
+------------------------------------------------------------------------
+BUILD SUCCESS
+------------------------------------------------------------------------
 ```
 
 ---
 
-# Assignment Requirements Coverage
+# 📚 Assignment Requirements
 
-| Requirement | Implementation |
-|---|:---:|
+| Requirement | Status |
+|---|---|
 | Abstract `Course` class | ✅ |
 | `TheoryCourse` extends `Course` | ✅ |
 | `LabCourse` extends `Course` | ✅ |
-| Polymorphism using `List<Course>` | ✅ |
-| `getType()` abstraction | ✅ |
-| Different `getType()` implementations | ✅ |
+| Inheritance | ✅ |
+| `List<Course>` polymorphism | ✅ |
 | Constructor chaining using `super(...)` | ✅ |
 | Override `toString()` | ✅ |
-| Create a department | ✅ |
-| Add Theory courses | ✅ |
-| Add Lab courses | ✅ |
-| Create students | ✅ |
-| Enroll students in courses | ✅ |
+| One department | ✅ |
+| Theory and Lab courses | ✅ |
+| Two students | ✅ |
+| Student enrollment | ✅ |
 | Display all courses | ✅ |
 | Display each student's courses | ✅ |
-| Maven project | ✅ |
+| Demonstrate `getType()` polymorphism | ✅ |
 
 ---
 
-# Learning Outcomes
+# 🎯 Learning Outcomes
 
-This project provides practical experience with:
+This project demonstrates practical experience with:
 
+- Java class design
 - Abstract classes
 - Inheritance
 - Polymorphism
-- Method overriding
-- Constructor chaining
 - Encapsulation
-- Java Collections
-- `List<Course>`
+- Constructor chaining
+- Method overriding
+- Constructors
+- Getters and setters
+- `List` and `ArrayList`
 - Object relationships
-- Console-based Java applications
+- Student enrollment
 - Maven project structure
-- Object-oriented system design
 
 ---
 
-# Design Summary
+# 👨‍💻 Author
 
-The overall design can be summarized as:
+**Mahmoud Bakri**
 
-```text
-                    Course
-                  <<abstract>>
-                       │
-             ┌─────────┴─────────┐
-             │                   │
-      TheoryCourse          LabCourse
-             │                   │
-             └─────────┬─────────┘
-                       │
-                  List<Course>
-                       │
-                       ▼
-                Polymorphic
-                  Behavior
-```
+Java | Object-Oriented Programming | Software Testing & Quality Assurance
 
-The university structure is represented as:
+## 📄 License
 
-```text
-Department
-    │
-    ├──────────────► Courses
-    │
-    └──────────────► Students
-                         │
-                         └──────────► Courses
-```
-
----
-
-# Future Improvements
-
-Possible future enhancements include:
-
-- Student registration validation
-- Course capacity management
-- Course search and filtering
-- Student IDs
-- Department management for multiple departments
-- Course schedules
-- Grade management
-- Enrollment limits
-- Persistent storage using a database
-- REST API integration
-- Unit and integration testing
-- Exception handling and input validation
-
----
-
-# Project Status
-
-**Status:** Completed
-
-The current implementation successfully demonstrates the required university course management scenario and the requested OOP concepts.
-
-The application builds successfully using Maven and completes its execution with:
-
-```text
-BUILD SUCCESS
-```
-
----
-
-# Author
-
-## Mahmoud Bakri
-
-Software Testing & Quality Assurance Learner
-
-### Areas of Interest
-
-- Software Testing
-- Quality Assurance
-- Java
-- Object-Oriented Programming
-- Test Automation
-- Software Quality
-
-### Connect
-
-- GitHub: [MahmoudBakri225](https://github.com/MahmoudBakri225)
-- Portfolio: [Mahmoud Bakri Portfolio](https://mahmoudbakri225.github.io/MahmoudBakri225/)
-
----
-
-## License
-
-This project was developed for educational and portfolio purposes.
-
----
-
-**Built with Java and Maven**
+This project was created for educational purposes as part of a Java Object-Oriented Programming assignment.
