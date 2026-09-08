@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.universitycourses;
 
-/**
- *
- * @author KA
- */
+
 public class TheoryCourse extends Course {
+   
     private String textbook;
     private String examType;
     private int lectureHoursPerWeek;
@@ -16,6 +10,7 @@ public class TheoryCourse extends Course {
     
     
     public TheoryCourse(String courseCode, String name, String description, int credits, int maxCapacity, String semester, String instructorName, String textbook, String examType, int lectureHoursPerWeek, String classroomNumber) {
+       
         super(courseCode, name, description, credits, maxCapacity, semester, instructorName);
         this.textbook = textbook;
         this.examType = examType;

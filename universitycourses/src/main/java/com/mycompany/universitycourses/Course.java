@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.universitycourses;
 
-/**
- *
- * @author KA
- */
 public abstract class Course {
     protected String courseCode;
     protected String name;
@@ -20,6 +12,7 @@ public abstract class Course {
     
     //constructor
     public Course(String courseCode, String name, String description, int credits, int maxCapacity, String semester, String instructorName) {
+        
         this.courseCode = courseCode;
         this.name = name;
         this.description = description;

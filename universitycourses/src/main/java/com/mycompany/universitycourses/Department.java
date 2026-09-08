@@ -1,16 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.universitycourses;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author KA
- */
 public class Department {
     private int departmentId;
     private String departmentName;
@@ -24,6 +16,7 @@ public class Department {
     
     //constructor
     public Department(int departmentId, String departmentName, String building, String headOfDepartment, String contactEmail, int establishedYear) {
+        
         this.departmentId = departmentId;
         this.departmentName = departmentName;
         this.building = building;

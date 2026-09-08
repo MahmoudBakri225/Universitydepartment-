@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.universitycourses;
 
-/**
- *
- * @author KA
- */
 public class LabCourse extends Course {
     private int equipmentCount;
     private String labLocation;
@@ -18,6 +10,7 @@ public class LabCourse extends Course {
     
     //constractor
     public LabCourse(String courseCode, String name, String description, int credits, int maxCapacity, String semester, String instructorName, int equipmentCount, String labLocation, boolean safetyTrainingRequired, int sessionDurationMinutes, String supervisorName) {
+       
         super(courseCode, name, description, credits, maxCapacity, semester, instructorName);
         this.equipmentCount = equipmentCount;
         this.labLocation = labLocation;
